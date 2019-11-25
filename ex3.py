@@ -76,7 +76,7 @@ def kmean(c1,c2,iter):
             c2y.append(el[1])
             
         try:
-            c1=[round(sum(c1x)/len(c1x),3),round(sum(c1y)/len(c1y),3)]
+            c1=[round(sum(c1x)/len(c1x),3),round(sum(c1y)/len(c1y),3)]   #updating cluster's centers using the main value of coordinate x and y
             c2=[round(sum(c2x)/len(c2x),3),round(sum(c2y)/len(c2y),3)]
         except ZeroDivisionError:
             pass
