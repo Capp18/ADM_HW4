@@ -1,3 +1,23 @@
+import pandas as pd
+from random import shuffle as sf
+from random import randint as rd
+import math
+import matplotlib.pyplot as plt
+
+f= open("C:/Users/Capp/Documents/Università/Magistrale/1-ADM/Homework4/wine.data","r")
+df=pd.DataFrame(f,columns=['chara'])
+l=[]
+for row in df['chara']:
+    l.append(row.strip('\n').split(','))
+    
+xy=[]  #A list containing all points pf the scatter plot (Ash, Alcanity of ash)
+for el in l:
+    p=[]
+    p.append(float(el[4]))
+    p.append(int(el[5]))
+    xy.append(p)
+sf(xy)
+
 plt.figure(figsize=(20,10))
 for el in xy:
     plt.scatter(el[0],el[1], c='black')
@@ -6,21 +26,20 @@ plt.xlabel('Ash',fontsize=20)
 plt.ylabel('Alcalinity of ash',fontsize=20)
 plt.show()
 
-import math
+
 def dist(x,y):
     distance=math.sqrt(sum([(a-b)**2 for a,b in zip(x,y)])) #Euclidean distance
     return distance
 
-from random import randint as rd
 #initialization first cluster center
 c1=[rd(1,30),rd(1,170)]
 #initialization second cluster center
 c2=[rd(1,30),rd(1,170)]
 iter=0
 def kmean(c1,c2,iter):
-    if iter!=4:
+    if iter!=5:
         clus=[c1,c2]
-        clu={'c1':[],'c2':[]}
+        clu={'c1':[],'c2':[]}  #A dictionary that groupify the points according to the clusters
         for i in range(len(xy)):
             distances=[]
             for el in clus:
@@ -49,13 +68,18 @@ def kmean(c1,c2,iter):
         for el in clu['c1']:
             c1x.append(el[0])
             c1y.append(el[1])
-        c1=[round(sum(c1x)/len(c1x),3),round(sum(c1y)/len(c1y),3)]
+        
         c2x=[]
         c2y=[]
         for el in clu['c2']:
             c2x.append(el[0])
             c2y.append(el[1])
-        c2=[round(sum(c2x)/len(c2x),3),round(sum(c2y)/len(c2y),3)]
+            
+        try:
+            c1=[round(sum(c1x)/len(c1x),3),round(sum(c1y)/len(c1y),3)]
+            c2=[round(sum(c2x)/len(c2x),3),round(sum(c2y)/len(c2y),3)]
+        except ZeroDivisionError:
+            pass
         
         #updating iter
         iter+=1
